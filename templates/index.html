@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Insurance product prediction APP</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+
+</head>
+
+<body>
+  <script>
+
+    function ValidatePetSelection(){  
+      var checkboxes = document.getElementsByName("insurance_product");  
+      var numberOfCheckedItems = 0;  
+      for(var i = 0; i < checkboxes.length; i++)  
+      {  
+          if(checkboxes[i].checked)  
+              numberOfCheckedItems++;  
+      }  
+      if(numberOfCheckedItems < 0)  
+      {  
+          alert("You need to select atleast one insurance product you have brought");  
+          return false;  
+      }  
+    }
+
+  </script>
+  <div class="login">
+    <h1>Predict Insurance product</h1>
+
+    <!-- Main Input For Receiving Query to our ML for the fields,  
+    ID	join_date	sex	marital_status	birth_year	branch_code	occupation_code	occupation_category_code	
+    + INSURANCE PRODUCT (P5DA	RIBP	8NN1	7POT	66FJ	GYSR	SOP4	RVSZ	PYUQ	LJR9	N2MW	AHXO	BSTQ	FM3X	K6QO	QBOL	JWFN	JZ9D	J9JW	GHYX	ECY3)
+    -->
+
+    <form action="{{ url_for('predict')}}" method="post">
+      <fieldset>  
+        <legend>Join Date</legend>  
+      <input type="text" id="datepicker" name="join_date" placeholder="join_date" required="required" /><br><br>
+      </fieldset>
+      <fieldset>  
+        <legend>Sex</legend>  
+      <select name="sex" placeholder="sex" required="required">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </select>
+      </fieldset>
+      <br><br>
+      <fieldset>  
+        <legend>marital status</legend>  
+      <select name="marital_status" placeholder="marital_status" required="required">
+        <option value="M">Married</option>
+        <option value="U">Unmarried</option>
+        <option value="S">Single</option>
+        <option value="W">Widower</option>
+        <option value="D">Divorced</option>
+      </select>
+      </fieldset>
+      <br><br>
+      <fieldset>  
+        <legend>Birth year</legend>  
+      <input type="number" name="birth_year" min="1950" placeholder="birth year" required="required" /><br><br>
+      </fieldset>
+      <fieldset>  
+        <legend>Branch code</legend> 
+      <input type="text" name="branch_code" placeholder="branch_code" required="required" /><br><br>
+      </fieldset>
+      <fieldset>  
+        <legend>Occupation Code</legend> 
+      <input type="text" name="occupation_code" placeholder="occupation_code" required="required" /><br><br>
+      </fieldset>
+      <fieldset>  
+        <legend>Occupation category code</legend> 
+      <input type="text" name="occupation_category_code" placeholder="occupation_category_code" required="required" />
+      </fieldset>
+
+      <fieldset>  
+        <legend>What insurance product have your brought?</legend>  
+        <input type="checkbox" name="insurance_product" value="P5DA" onclick="return ValidatePetSelection();">P5DA
+        <input type="checkbox" name="insurance_product" value="RIBP" onclick="return ValidatePetSelection();">RIBP
+        <input type="checkbox" name="insurance_product" value="8NN1" onclick="return ValidatePetSelection();">8NN1
+        <input type="checkbox" name="insurance_product" value="7POT" onclick="return ValidatePetSelection();">7POT
+        <input type="checkbox" name="insurance_product" value="66FJ" onclick="return ValidatePetSelection();">66FJ
+        <input type="checkbox" name="insurance_product" value="GYSR" onclick="return ValidatePetSelection();">GYSR
+        <input type="checkbox" name="insurance_product" value="SOP4" onclick="return ValidatePetSelection();">SOP4
+        <input type="checkbox" name="insurance_product" value="RVSZ" onclick="return ValidatePetSelection();">RVSZ
+        <input type="checkbox" name="insurance_product" value="PYUQ" onclick="return ValidatePetSelection();">PYUQ
+        <input type="checkbox" name="insurance_product" value="LJR9" onclick="return ValidatePetSelection();">LJR9
+        <input type="checkbox" name="insurance_product" value="N2MW" onclick="return ValidatePetSelection();">N2MW<br>
+        <input type="checkbox" name="insurance_product" value="AHXO" onclick="return ValidatePetSelection();">AHXO
+        <input type="checkbox" name="insurance_product" value="BSTQ" onclick="return ValidatePetSelection();">BSTQ
+        <input type="checkbox" name="insurance_product" value="FM3X" onclick="return ValidatePetSelection();">FM3X
+        <input type="checkbox" name="insurance_product" value="K6QO" onclick="return ValidatePetSelection();">K6QO
+        <input type="checkbox" name="insurance_product" value="QBOL" onclick="return ValidatePetSelection();">QBOL
+        <input type="checkbox" name="insurance_product" value="JWFN" onclick="return ValidatePetSelection();">JWFN
+        <input type="checkbox" name="insurance_product" value="JZ9D" onclick="return ValidatePetSelection();">JZ9D
+        <input type="checkbox" name="insurance_product" value="J9JW" onclick="return ValidatePetSelection();">J9JW
+        <input type="checkbox" name="insurance_product" value="GHYX" onclick="return ValidatePetSelection();">GHYX
+        <input type="checkbox" name="insurance_product" value="ECY3" onclick="return ValidatePetSelection();">ECY3
+        <br>
+        </fieldset>  
+
+      <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+    </form>
+
+    <br>
+    <br>
+    {{ prediction_text }}
+
+  </div>
+
+
+</body>
+
+</html>
