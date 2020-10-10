@@ -14,3 +14,8 @@ In this project we have taken input of insurance products bought by the customer
  
 Model and flask app is deployed on Heroku and upon given the customer details will predict the next best insurance product that the salesperson should pitch.
 
+Demo UI of app:
+
+![Demo Insurance Prediction APP](/images/demo-app.jpg)
+Format: ![Demo Insurance Prediction](url)
+
