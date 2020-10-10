@@ -17,5 +17,4 @@ Model and flask app is deployed on Heroku and upon given the customer details wi
 Demo UI of app:
 
 ![Demo Insurance Prediction APP](/images/demo-app.jpg)
-Format: ![Demo Insurance Prediction](url)
 
