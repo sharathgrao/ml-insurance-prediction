@@ -18,3 +18,7 @@ Demo UI of app:
 
 ![Demo Insurance Prediction APP](/images/demo-app.jpg)
 
+## Demo APP Hosted on heroku
+
+Demo URL -> https://insurance-prediction-ml.herokuapp.com/
+
