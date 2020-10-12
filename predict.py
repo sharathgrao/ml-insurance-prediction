@@ -3,16 +3,10 @@ import pandas as pd
 from datetime import date
 import numpy as np
 
-# print(test)
-
-# sample = test.iloc[0]
 catb_model = pickle.load(open("insurance_catb.pkl", 'rb'))
 xgb_model = pickle.load(open("insurance_xgb.pkl", 'rb'))
 
 def predict_product(sample):
-      # test = pd.read_csv("./Test.csv")
-      # sample = test.truncate(before=0, after=0)
-
       features_test = []
       columns = []
       append_features = ['P5DA', 'RIBP', '8NN1', '7POT', '66FJ', 'GYSR', 'SOP4', 'RVSZ', 'PYUQ', 'LJR9', 
@@ -26,20 +20,12 @@ def predict_product(sample):
 
       features_test = np.concatenate(features_test, axis=1)
       columns = np.concatenate(np.array(columns))
-      # print(columns)
 
       sample = pd.DataFrame(features_test)
       sample.columns = columns
 
-      # sample = pd.concat([sample[8:], sample[:8]], ignore_index=False)
-      # sample = sample.array
-
-      # print(sample)
-
-
-      # print(sample["ID"])
+      ##Features similar to train data feature engineering are generated
       sample['dayofweek'] = pd.to_datetime(sample['join_date']).dt.dayofweek
-
       sample['day'] = sample['join_date'].apply(lambda x: float(x.split('/')[0]) if (x == x) else np.nan)
       sample['month'] = sample['join_date'].apply(lambda x: float(x.split('/')[1]) if (x == x) else np.nan)
       sample['year'] = sample['join_date'].apply(lambda x: float(x.split('/')[2]) if (x == x) else np.nan)
@@ -47,17 +33,15 @@ def predict_product(sample):
       sample['date_diff'] = sample['year'] - sample['birth_year']
       sample['join_date'] = (pd.to_datetime(sample['join_date']) - pd.to_datetime("01/01/1970")).dt.days
       sample['join_date'] = sample['join_date'].astype(int)
-
-      # print(sample['join_date'])
       sample['birth_year'] = sample['birth_year'].astype(int)
 
-      # sample = pd.DataFrame(sample)
-
+      ##One hot encoding is performed
       sample = pd.get_dummies(sample, columns=['sex', 'marital_status', \
                                            'branch_code','occupation_code',\
                                            'occupation_category_code','month','year','passed_years'])
 
 
+      ##Based on the cat features, we will create the other features required for prediction and mark the categories other than inputs as 0
       cat_features = ['sex_F', 'sex_M', 'marital_status_F', 'marital_status_M',
              'marital_status_S', 'marital_status_U', 'marital_status_others',
              'branch_code_1X1H', 'branch_code_30H5', 'branch_code_49BM',
@@ -82,15 +66,10 @@ def predict_product(sample):
              'passed_years_2.0', 'passed_years_3.0', 'passed_years_4.0',
              'passed_years_5.0', 'passed_years_6.0', 'passed_years_7.0',
              'passed_years_8.0', 'passed_years_9.0', 'passed_years_10.0']
-      print(len(cat_features))
+      # print(len(cat_features))
 
-      # bc = ['1X1H', '30H5', '49BM', '748L', '94KC', 'E5SW', 'O67J', 'UAOD', 'XX25', 'ZFER', 'others']
-      # oc = ['0FOI', '0KID', '0OJM', '0ZND', '2A7I', '31JW', '8CHJ', '930J', '9F96', 'BIA0', 'BP09', 'BPSA', 'E2MJ', 'HSI5', 'JBJP', 'QZYX', 'SST3', 'UJ5T', 'others']
-      # print(sample.index, sample.array)
-
+      ##The features order has to follow the same order as that of train data so we generate new sample from sample
       new_sample = sample[sample.columns[:27]]
-
-      print(new_sample)
 
       for c in cat_features:
             if c not in sample.columns:
@@ -105,7 +84,6 @@ def predict_product(sample):
                   if c in s and  s not in cat_features:
                         new_sample[c + "_others"] = 1
                         new_sample[c + "_others"] = new_sample[c + "_others"].astype('uint8')
-                        # new_sample.drop([s], axis=1)
 
       # print(new_sample.columns[:35])
       predicts = []
@@ -119,10 +97,10 @@ def predict_product(sample):
 
       products = new_sample.columns[:21]
 
+      ##Both predictions are averaged to get the final output
       y_test = pd.DataFrame(np.mean(predicts, axis=0))
       y_test.columns = products
 
-      # print(y_test.values)
       return y_test
 
 if __name__ == '__main__':

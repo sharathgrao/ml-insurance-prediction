@@ -5,10 +5,6 @@ from predict import predict_product
 import pandas as pd
 
 app = Flask(__name__)
-#TODO: Use model from predict.py
-#model = pickle.load(
- #   open('model.pkl', 'rb'))
-
 
 @app.route('/')
 def home():
@@ -17,13 +13,6 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    '''
-    For rendering results on HTML GUI
-    Main Input For Receiving Query to our ML for the fields,  
-    ID	join_date	sex	marital_status	birth_year	branch_code	occupation_code	occupation_category_code	
-    + INSURANCE PRODUCT (P5DA	RIBP	8NN1	7POT	66FJ	GYSR	SOP4	RVSZ	PYUQ	LJR9	N2MW	AHXO	BSTQ	FM3X	K6QO	
-    QBOL	JWFN	JZ9D	J9JW	GHYX	ECY3) & other feature engineered columns
-    '''
     join_date = request.form.get('join_date')
     sex = request.form.get('sex')
     marital_status = request.form.get('marital_status')
